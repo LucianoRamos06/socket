@@ -1,16 +1,11 @@
 package com.ufra.socket.servidor;
 
+import com.ufra.socket.criptografia.Criptografia;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class UDPServer {
-
-    static String IV = "AAAAAAAAAAAAAAAA";
-    static String chaveencriptacao = "0123456789abcdef";
     
     public static void main(String args[]) throws Exception {
         //Cria um servidor UDP na porta 9876
@@ -23,7 +18,7 @@ public class UDPServer {
             //Recebe as mensagens dos clientes
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
-            String sentence = UDPServer.decrypt(receivePacket.getData(), chaveencriptacao);
+            String sentence = Criptografia.decrypt(receivePacket.getData());
             System.out.println("Recebido: " + sentence);
             //Responde ao mesmo IP e Porta do pacote recebido.
             InetAddress IPAddress = receivePacket.getAddress();
@@ -39,10 +34,5 @@ public class UDPServer {
         }
     }
 
-    public static String decrypt(byte[] textoencriptado, String chaveencriptacao) throws Exception {
-        Cipher decripta = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
-        SecretKeySpec key = new SecretKeySpec(chaveencriptacao.getBytes("UTF-8"), "AES");
-        decripta.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(IV.getBytes("UTF-8")));
-        return new String(decripta.doFinal(textoencriptado), "UTF-8");
-    }
+  
 }
