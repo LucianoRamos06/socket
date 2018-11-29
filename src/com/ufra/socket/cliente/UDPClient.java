@@ -19,7 +19,10 @@ public class UDPClient {
             System.out.println("Cliente preparado para enviar: ");
             //L� entrada do usu�rio
             String sentence = inFromUser.readLine();
-            sendData = Criptografia.encrypt(sentence);
+            String  c = new String(Criptografia.encrypt(sentence));
+            System.out.println("tamanho string " + c.getBytes().length);
+            sendData = c.getBytes();
+            
 
 //            System.out.println("decripty: " + UDPClient.decrypt(sendData, chaveencriptacao));
             //Cria pacote udp

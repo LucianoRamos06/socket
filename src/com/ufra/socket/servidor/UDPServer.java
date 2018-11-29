@@ -18,6 +18,8 @@ public class UDPServer {
             //Recebe as mensagens dos clientes
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
+            System.out.println("tamanho: " + receivePacket.getData().length);
+            System.out.println("string: " + new String(receivePacket.getData()).trim().length());
             String sentence = Criptografia.decrypt(receivePacket.getData());
             System.out.println("Recebido: " + sentence);
             //Responde ao mesmo IP e Porta do pacote recebido.
