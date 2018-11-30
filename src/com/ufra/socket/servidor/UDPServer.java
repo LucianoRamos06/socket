@@ -6,7 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class UDPServer {
-    
+
     public static void main(String args[]) throws Exception {
         //Cria um servidor UDP na porta 9876
         DatagramSocket serverSocket = new DatagramSocket(9876);
@@ -18,9 +18,10 @@ public class UDPServer {
             //Recebe as mensagens dos clientes
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
-            System.out.println("tamanho: " + receivePacket.getData().length);
-            System.out.println("string: " + new String(receivePacket.getData()).trim().length());
-            String sentence = Criptografia.decrypt(receivePacket.getData());
+
+            byte[] binarios = UDPServer.tratarBytes(receivePacket);
+
+            String sentence = Criptografia.decrypt(binarios);
             System.out.println("Recebido: " + sentence);
             //Responde ao mesmo IP e Porta do pacote recebido.
             InetAddress IPAddress = receivePacket.getAddress();
@@ -36,5 +37,14 @@ public class UDPServer {
         }
     }
 
-  
+    public static byte[] tratarBytes(DatagramPacket receivePacket) {
+        byte[] receiveDataBackUp = new byte[receivePacket.getLength()];
+        for (int i = 0; i < receivePacket.getLength(); i++) {
+            byte b = receivePacket.getData()[i];
+            receiveDataBackUp[i] = b;
+        }
+
+        return receiveDataBackUp;
+    }
+
 }

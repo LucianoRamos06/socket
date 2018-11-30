@@ -19,12 +19,8 @@ public class UDPClient {
             System.out.println("Cliente preparado para enviar: ");
             //L� entrada do usu�rio
             String sentence = inFromUser.readLine();
-            String  c = new String(Criptografia.encrypt(sentence));
-            System.out.println("tamanho string " + c.getBytes().length);
-            sendData = c.getBytes();
-            
+            sendData = Criptografia.encrypt(sentence);
 
-//            System.out.println("decripty: " + UDPClient.decrypt(sendData, chaveencriptacao));
             //Cria pacote udp
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
             //envia ao servidor
